@@ -1,0 +1,3 @@
+- hosts: ansible_server
+  tasks:
+    - command: hostname
