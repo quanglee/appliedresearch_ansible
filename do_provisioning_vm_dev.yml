@@ -1,4 +1,4 @@
 ---
 - hosts: ansible_server
   roles:
-    - do_develop-vms
+    - { role: do_develop-vms }

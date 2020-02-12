@@ -1,3 +1,9 @@
 ---
 - name: Initial checks before provisioning
   command: hostname
+
+- name: Ensure ssh key exists as we used it for login
+  command: echo "{{ do_token }}"
+  register: hello
+
+- debug: msg="{{ hello.stdout }}"
