@@ -1,2 +1,3 @@
 ---
-# tasks file for do_develop-vms
+- name: Initial checks before provisioning
+  command: hostname
