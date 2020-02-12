@@ -1,2 +1,6 @@
+[ansible_server]
+ansibleserver ansible_connection=local
+
 [ansible_hosts]
 ansiblenode01 ansible_host=192.168.0.227
+
