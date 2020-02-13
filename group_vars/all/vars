@@ -1,2 +1,6 @@
 ---
 do_token: "{{ vault_do_token }}"
+ssh_pub_key: "{{ vault_ssh_pub_key }}"
+vm_our_docker_apps_size: s-1vcpu-1gb
+vm_our_docker_apps_image: ubuntu-18-04-x64
+vm_our_docker_apps_region: nyc3

@@ -2,8 +2,35 @@
 - name: Initial checks before provisioning
   command: hostname
 
-- name: Ensure ssh key exists as we used it for login
-  command: echo "{{ do_token }}"
-  register: hello
+- name: add ssh key into Digital Ocean
+  digital_ocean_sshkey:
+    oauth_token: "{{ do_token }}"
+    name: "Ansible SSH Public Key"
+    ssh_pub_key: "{{ ssh_pub_key }}"
+    state: present
 
-- debug: msg="{{ hello.stdout }}"
+- name: get ssh key info
+  digital_ocean_sshkey_info:
+    oauth_token: "{{ do_token }}"
+  register: ssh_keys
+
+- set_fact:
+    pubkey: "{{ item.id }}"
+  loop: "{{ ssh_keys.data|json_query(ssh_pubkey) }}"
+  vars:
+    ssh_pubkey: "[?name=='Ansible SSH Public Key']"
+
+- name: create vm droplet for our docker apps
+  digital_ocean_droplet:
+    state: present
+    name: mydroplet-vm-docker-apps
+    oauth_token: "{{ do_token }}"
+    size: "{{ vm_our_docker_apps_size }}"
+    image: "{{ vm_our_docker_apps_image }}"
+    region: "{{ vm_our_docker_apps_region }}"
+    ssh_keys: ["{{ pubkey }}"]
+    wait_timeout: 120
+  register: my_vm_droplet
+
+- debug:
+    msg: "ID is {{ my_vm_droplet.data.droplet.id }}, IP is {{ my_vm_droplet.data.ip_address }}"
