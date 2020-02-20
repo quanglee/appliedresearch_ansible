@@ -17,9 +17,9 @@
     state: present
     name: "{{ name_droplet }}"
     oauth_token: "{{ do_token }}"
-    size: "{{ do_vm_size }}"
-    image: "{{ do_vm_image }}"
-    region: "{{ do_vm_region }}"
+    size: "{{ ansible_do_vm_size }}"
+    image: "{{ ansible_do_vm_image }}"
+    region: "{{ ansible_do_vm_region }}"
     ssh_keys: ["{{ pubkey }}"]
     wait_timeout: 120
   register: do_droplet
