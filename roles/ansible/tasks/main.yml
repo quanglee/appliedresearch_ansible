@@ -3,8 +3,23 @@
   wait_for_connection:
     timeout: 300
 
-- name: Initial checks before provisioning "{{ ip_address }}" server
+- name: Initial checks before provisioning "{{ do_droplet.data.ip_address }}" server
   command: hostname
 
-- name: Install tcpdump.
-  apt: name=tcpdump state=present
+- name: Install common libraries
+  apt: name={{item}} state=present update_cache=yes
+  with_items:
+    - software-properties-common
+    - nginx
+    - python3-pip
+    - python-virtualenv
+
+- name: Update System
+  apt: update_cache=yes
+
+- name: Add Repository for Ansible
+  apt_repository:
+    repo: ppa:ansible/ansible
+
+- name: Install Ansible
+  apt: name=ansible state=present update_cache=yes
