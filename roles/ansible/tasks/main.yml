@@ -1,0 +1,10 @@
+---
+- name: Wait for system to become reachable
+  wait_for_connection:
+    timeout: 300
+
+- name: Initial checks before provisioning "{{ ip_address }}" server
+  command: hostname
+
+- name: Install tcpdump.
+  apt: name=tcpdump state=present

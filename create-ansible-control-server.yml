@@ -1,0 +1,12 @@
+- hosts: ansible_server
+  roles: 
+    - { role: do_vms, name_droplet: "ansiblecontrol-droplet" }
+
+- hosts: ansible_control_server
+  remote_user: root
+  become: true
+  gather_facts: False
+  roles:
+    - { role: ansible, ip_address: "{{ do_droplet.data.ip_address }}" }
+    #- { role: ansible, ip_address: "167.172.232.131" }
+
