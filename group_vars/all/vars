@@ -1,6 +1,7 @@
 ---
 do_token: "{{ vault_do_token }}"
 ssh_pub_key: "{{ vault_ssh_pub_key }}"
+sudo_user_appteam: "{{ vault_sudo_user_appteam }}"
 
 ansible_do_vm_size: s-1vcpu-2gb
 ansible_do_vm_image: ubuntu-18-04-x64

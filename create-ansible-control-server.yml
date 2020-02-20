@@ -9,5 +9,5 @@
   roles:
     - { role: ansible  }
     - { role: docker }
-    #- { role: ansible, ip_address: "167.172.232.131" }
+    #- { role: prepare_ansible_apps }
 

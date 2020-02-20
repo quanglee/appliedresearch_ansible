@@ -1,0 +1,6 @@
+---
+#- debug: var=hostvars[inventory_hostname].ansible_host
+
+#- debug:
+#    msg: " Hello {{ ansible_ssh_host }}"
+

@@ -7,9 +7,6 @@
   command: hostname
   register: myip_address
 
-- debug:
-    msg: "TEST ID DROPLET is {{ myip_address }}"
-
 - name: Install common libraries for Ansible
   apt: name={{item}} state=present update_cache=yes
   with_items:
