@@ -1,4 +1,8 @@
 ---
+- name: Wait for system to become reachable
+  wait_for_connection:
+    timeout: 300
+
 - name: Install common libraries
   apt: name={{item}} state=present update_cache=yes
   with_items:
@@ -7,6 +11,8 @@
     - ca-certificates
     - python3-setuptools
     - software-properties-common
+    - python3-pip
+    - python-virtualenv
 
 - name: Add Docker GPG apt Key
   apt_key:

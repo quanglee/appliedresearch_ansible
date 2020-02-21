@@ -11,9 +11,6 @@
   apt: name={{item}} state=present update_cache=yes
   with_items:
     - software-properties-common
-    - nginx
-    - python3-pip
-    - python-virtualenv
 
 - name: Update System
   apt: update_cache=yes

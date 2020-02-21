@@ -17,9 +17,9 @@
     state: present
     name: "{{ name_droplet }}"
     oauth_token: "{{ do_token }}"
-    size: "{{ ansible_do_vm_size }}"
-    image: "{{ ansible_do_vm_image }}"
-    region: "{{ ansible_do_vm_region }}"
+    size: "{{ do_vm_size }}"
+    image: "{{ do_vm_image }}"
+    region: "{{ do_vm_region }}"
     ssh_keys: ["{{ pubkey }}"]
     wait_timeout: 120
   register: do_droplet
@@ -27,7 +27,7 @@
 - name: Add {{ do_droplet.data.ip_address }} server to our inventory (temp)
   add_host:
     name: "{{ do_droplet.data.ip_address }}"
-    groups: ansible_control_server
+    groups: temp_inventory_group
     ansible_host: "{{ do_droplet.data.ip_address }}"
     ansible_ssh_host: "{{ do_droplet.data.ip_address }}"
     ansible_user: root

@@ -1,0 +1,13 @@
+---
+# tasks file for webserver
+- name: Install some required libraries to run this web server
+  apt: name={{ item }} state=present update_cache=yes
+  with_items: 
+    - nginx
+    - mysql-client
+    - curl
+
+- name: Ensure nginx started
+  service: name=nginx state=started enabled=yes
+
+

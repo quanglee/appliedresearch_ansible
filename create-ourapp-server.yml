@@ -1,0 +1,17 @@
+- hosts: ansible_server
+  roles: 
+    - { role: do_vms, name_droplet: "ourapp-droplet", do_vm_size: "{{ ourapp_do_vm_size }}", do_vm_image: "{{ ourapp_do_vm_image}}", do_vm_region: "{{ ourapp_do_vm_region }}" }
+
+- hosts: temp_inventory_group
+  remote_user: root
+  become: true
+  gather_facts: False
+  roles:
+    - { role: docker }
+
+- hosts: temp_inventory_group
+  remote_user: appteam
+  become: true
+  gather_facts: False
+  roles:
+    - { role: webserver }

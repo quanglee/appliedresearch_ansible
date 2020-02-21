@@ -5,8 +5,12 @@ sudo_user_appteam: "{{ vault_sudo_user_appteam }}"
 
 ansible_do_vm_size: s-1vcpu-2gb
 ansible_do_vm_image: ubuntu-18-04-x64
-ansible_do_vm_region: nyc3
+ansible_do_vm_region: sfo2
+
+ourapp_do_vm_size: s-1vcpu-2gb
+ourapp_do_vm_image: ubuntu-18-04-x64
+ourapp_do_vm_region: sfo2
 
 do_vm_size: s-1vcpu-1gb
 do_vm_image: ubuntu-18-04-x64
-do_vm_region: nyc3
+do_vm_region: sfo2

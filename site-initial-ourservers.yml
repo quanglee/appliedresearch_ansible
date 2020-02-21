@@ -1,0 +1,3 @@
+---
+- include: create-ansible-control-server.yml
+- include: create-ourapp-server.yml

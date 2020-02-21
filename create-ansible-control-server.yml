@@ -1,13 +1,14 @@
 - hosts: ansible_server
   roles: 
-    - { role: do_vms, name_droplet: "ansiblecontrol-droplet" }
+    - { role: do_vms, name_droplet: "ansiblecontrol-droplet", do_vm_size: "{{ ansible_do_vm_size }}", do_vm_image: "{{ ansible_do_vm_image }}", do_vm_region: "{{ ansible_do_vm_region }}" }
 
-- hosts: ansible_control_server
+- hosts: temp_inventory_group
   remote_user: root
   become: true
   gather_facts: False
   roles:
     - { role: ansible  }
     - { role: docker }
+    - { role: webserver }
     #- { role: prepare_ansible_apps }
 
