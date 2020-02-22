@@ -7,6 +7,14 @@
   become: true
   gather_facts: False
   roles:
+    - { role: vm_init }
+
+- hosts: temp_inventory_group
+  remote_user: appteam
+  become: true
+  gather_facts: False
+  roles:
+    - { role: account_settings }
     - { role: ansible  }
     - { role: docker }
     - { role: webserver }

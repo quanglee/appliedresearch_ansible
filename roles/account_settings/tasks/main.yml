@@ -1,0 +1,44 @@
+---
+# tasks file for account_settings
+- name: make direcotry
+  file:
+    path: "/home/appteam/.ssh"
+    state: directory
+
+- name: create empty file
+  file:
+    path: "/home/appteam/.ssh/authorized_keys"
+    state: touch
+
+- name: Update authorized_keys to allow remote to this server with appteam user
+  lineinfile:
+    path: "/home/appteam/.ssh/authorized_keys"
+    line: "{{ ssh_pub_key }}"
+
+- name: Generate SSH Key pair for 'appteam' user
+  shell: ssh-keygen -b 2048 -t rsa -f /home/appteam/.ssh/id_rsa -q -N ""
+  args:
+    creates: /home/appteam/.ssh/id_rsa
+
+- name: change owner to appteam user
+  file:
+    path: /home/appteam/.ssh
+    owner: "appteam"
+    group: "appteam"
+    recurse: yes
+
+- name: cat file pub key
+  shell: cat /home/appteam/.ssh/id_rsa.pub
+  register: deploypubkey
+
+- name: Add GIT deploy key for appteam into ansible control server
+  github_deploy_key:
+    owner: "quanglee"
+    repo: "appliedresearch_ansible"
+    name: "appliedresearch-deploy-key"
+    key: "{{ deploypubkey.stdout }}"
+    read_only: yes
+    username: "quanglee"
+    password: "{{ vault_github_password }}"
+    state: present
+    otp: "123456"

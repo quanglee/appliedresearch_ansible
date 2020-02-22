@@ -1,8 +1,4 @@
 ---
-- name: Wait for system to become reachable
-  wait_for_connection:
-    timeout: 300
-
 - name: Install common libraries
   apt: name={{item}} state=present update_cache=yes
   with_items:
@@ -30,25 +26,6 @@
 - name: Install Docker Module for Python
   pip:
     name: docker
-
-- name: Make sure we have a 'appteam' group
-  group:
-    name: appteam
-    state: present
-
-- name: Make sure we have a 'docker' group
-  group:
-    name: docker
-    state: present
-
-- name: create a new appteam user with appteam and docker group
-  user:
-    name: appteam
-    state: present
-    group: appteam
-    groups: "sudo, docker"
-    password: "{{ sudo_user_appteam }}"
-    comment: "Comment"
 
 - name: Install Python docker / docker-compse module
   pip:
