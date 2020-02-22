@@ -1,0 +1,63 @@
+https://www.jeffgeerling.com/blog/2018/cloning-private-github-repositories-ansible-on-remote-server-through-ssh
+read this file It should work with git checkout
+- hosts: temp_inventory_group
+  remote_user: root
+  become: true
+  gather_facts: False
+  tasks:
+#    - name: make direcotry
+#      file:
+#        path: "/home/appteam/.ssh"
+#        state: directory
+#    - name: create empty file
+#      file:
+#        path: "/home/appteam/.ssh/authorized_keys"
+#        state: touch
+#    - name: put pubkey
+#      lineinfile:
+#        path: "/home/appteam/.ssh/authorized_keys"
+#        line: "{{ ssh_pub_key }}"
+     - name: change owner to appteam user
+       file:
+         path: /home/appteam/.ssh
+         owner: "appteam"
+         group: "appteam"
+         mode: 0750
+         recurse: yes
+#    - lineinfile:
+#        path: /etc/sudoers
+#        state: present
+#        regexp: '^%sudo'
+#        line: '%sudo ALL=(ALL) NOPASSWD: ALL'
+#        validate: 'visudo -cf %s'
+
+- hosts: temp_inventory_group
+  remote_user: appteam
+  become: true
+  gather_facts: False
+  tasks:
+#    - name: Generate SSH keys for appteam
+#      shell: ssh-keygen -b 2048 -t rsa -f /home/appteam/.ssh/id_rsa -q -N ""
+#      args:
+#        creates: /home/appteam/.ssh/id_rsa
+#    - name: cat file pub key
+#      shell: cat /home/appteam/.ssh/id_rsa.pub
+#      register: deploypubkey
+
+#    - name: Add GIT deploy key for appteam into ansible control server
+#      github_deploy_key:
+#        owner: "quanglee"
+#        repo: "appliedresearch_ansible"
+#        name: "appliedresearch-deploy-key"
+#        key: "{{ deploypubkey.stdout }}"
+#        read_only: yes
+#        username: "quanglee"
+#        password: "{{ vault_github_password }}"
+#        state: present
+#        otp: "123456"
+
+    #- name: Git checkout Ansible Repo
+    #  git:
+    #    repo: 'https://github.com/quanglee/appliedresearch_ansible.git'
+    #    dest: /home/appteam/testrepo
+    #    version: master
