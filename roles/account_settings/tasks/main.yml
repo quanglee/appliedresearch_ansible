@@ -27,18 +27,6 @@
     group: "appteam"
     recurse: yes
 
-- name: cat file pub key
-  shell: cat /home/appteam/.ssh/id_rsa.pub
-  register: deploypubkey
+- name: Add GitHub as knownhosts
+  shell: ssh-keyscan -t rsa github.com >> ~/.ssh/known_hosts
 
-- name: Add GIT deploy key for appteam into ansible control server
-  github_deploy_key:
-    owner: "quanglee"
-    repo: "appliedresearch_ansible"
-    name: "appliedresearch-deploy-key"
-    key: "{{ deploypubkey.stdout }}"
-    read_only: yes
-    username: "quanglee"
-    password: "{{ vault_github_password }}"
-    state: present
-    otp: "123456"

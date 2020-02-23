@@ -1,6 +1,75 @@
 ---
-#- debug: var=hostvars[inventory_hostname].ansible_host
-
 #- debug:
 #    msg: " Hello {{ ansible_ssh_host }}"
 
+- name: generate deploy key for appliedresearch_ansible repo
+  shell: ssh-keygen -b 2048 -t rsa -f /home/appteam/.ssh/id_rsa_deploy_ansible -q -N ""
+  args:
+    creates: /home/appteam/.ssh/id_rsa_deploy_ansible
+
+- name: generate deploy key for appliedresearch_flask_ansible repo
+  shell: ssh-keygen -b 2048 -t rsa -f /home/appteam/.ssh/id_rsa_deploy_flask_ansible -q -N ""
+  args:
+    creates: /home/appteam/.ssh/id_rsa_deploy_flask_ansible
+
+- name: cat file pub key for ansible repo
+  shell: cat /home/appteam/.ssh/id_rsa_deploy_ansible.pub
+  register: deploypubkeyansible
+
+- name: cat file pub key for flask ansible repo
+  shell: cat /home/appteam/.ssh/id_rsa_deploy_flask_ansible.pub
+  register: deploypubkeyflaskansible
+
+- name: Add GIT deploy key for appteam into ansible repo
+  github_deploy_key:
+    owner: "quanglee"
+    repo: "appliedresearch_ansible"
+    name: "appliedresearch-deploy-key"
+    key: "{{ deploypubkeyansible.stdout }}"
+    read_only: yes
+    username: "quanglee"
+    password: "{{ vault_github_password }}"
+    state: present
+    otp: "123456"
+
+- name: Add GIT deploy key for appteam into flask ansible repo
+  github_deploy_key:
+    owner: "quanglee"
+    repo: "appliedresearch-flask-ansible-wrapper"
+    name: "appliedresearch-flask-deploy-key"
+    key: "{{ deploypubkeyflaskansible.stdout }}"
+    read_only: yes
+    username: "quanglee"
+    password: "{{ vault_github_password }}"
+    state: present
+    otp: "123456"
+
+- name: create ansible folder to host GIT Repo
+  file:
+    path: "/home/appteam/ansible-repo"
+    owner: "appteam"
+    group: "appteam"
+    state: directory
+    recurse: yes
+
+- name: create flask ansible folder to host GIT Repo
+  file:
+    path: "/home/appteam/flaskansible-repo"
+    owner: "appteam"
+    group: "appteam"
+    state: directory
+    recurse: yes
+
+- name: Git checkout Ansible Repo
+  git:
+    repo: 'git@github.com:quanglee/appliedresearch_ansible.git'
+    dest: /home/appteam/ansible-repo
+    key_file: /home/appteam/.ssh/id_rsa_deploy_ansible
+    version: master
+
+- name: Git checkout Flask Ansible Repo
+  git:
+    repo: 'git@github.com:quanglee/appliedresearch-flask-ansible-wrapper.git'
+    dest: /home/appteam/flaskansible-repo
+    key_file: /home/appteam/.ssh/id_rsa_deploy_flask_ansible
+    version: master

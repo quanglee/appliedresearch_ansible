@@ -10,13 +10,18 @@
     - { role: vm_init }
 
 - hosts: temp_inventory_group
-  remote_user: appteam
-  become: true
+  become: yes
+  become_user: appteam
   gather_facts: False
   roles:
     - { role: account_settings }
+    - { role: prepare_ansible_apps }
+
+- hosts: temp_inventory_group
+  become: yes
+  gather_facts: False
+  roles:
     - { role: ansible  }
     - { role: docker }
     - { role: webserver }
-    #- { role: prepare_ansible_apps }
 
