@@ -1,8 +1,0 @@
-- hosts: temp_inventory_group
-  remote_user: appteam
-  become: true
-  become_user: appteam
-  gather_facts: False
-  tasks:
-    - name: create ansible folder to host GIT Flask Ansible Repo
-      command: hostname        

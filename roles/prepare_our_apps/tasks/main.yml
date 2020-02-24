@@ -1,0 +1,40 @@
+---
+# tasks file for prepare_our_apps
+#- debug:
+#    msg: " Hello {{ ansible_ssh_host }}"
+
+- name: generate deploy key for appliedsearch-vm-products repo
+  shell: ssh-keygen -b 2048 -t rsa -f /home/appteam/.ssh/id_rsa_deploy_vm_products -q -N ""
+  args:
+    creates: /home/appteam/.ssh/id_rsa_deploy_vm_products
+
+- name: cat file pub key for ansible repo
+  shell: cat /home/appteam/.ssh/id_rsa_deploy_vm_products.pub
+  register: deploypubkeyvmproducts
+
+- name: Add GIT deploy key for appteam into appliedsearch-vm-products repo
+  github_deploy_key:
+    owner: "quanglee"
+    repo: "appliedsearch-vm-products"
+    name: "appliedresearch-vm-product-deploy-key"
+    key: "{{ deploypubkeyvmproducts.stdout }}"
+    read_only: yes
+    username: "quanglee"
+    password: "{{ vault_github_password }}"
+    state: present
+    otp: "123456"
+
+- name: create ansible folder to host GIT Repo
+  file:
+    path: "/home/appteam/vm-products-repo"
+    owner: "appteam"
+    group: "appteam"
+    state: directory
+    recurse: yes
+
+- name: Git checkout VM Products Repo
+  git:
+    repo: 'git@github.com:quanglee/appliedsearch-vm-products.git'
+    dest: /home/appteam/vm-products-repo
+    key_file: /home/appteam/.ssh/id_rsa_deploy_vm_products
+    version: master

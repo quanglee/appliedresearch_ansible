@@ -1,0 +1,21 @@
+- hosts: temp_inventory_group
+  remote_user: appteam
+  become: true
+  become_user: appteam
+  gather_facts: False
+  tasks:
+    - name: Test
+      command: hostname        
+   
+    - name: Tear down existing services
+      docker_compose:
+         project_src: /home/appteam/flaskansible-repo
+         state: absent
+
+    - name: Create and start services
+      docker_compose:
+        project_src: /home/appteam/flaskansible-repo
+      register: output
+
+    - debug:
+        var: output

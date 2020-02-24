@@ -2,4 +2,4 @@
 - hosts: localhost
   remote_user: root
   roles:
-    - do_develop-vms
+    - prepare_our_apps
