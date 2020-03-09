@@ -11,6 +11,10 @@ ourapp_do_vm_size: s-1vcpu-2gb
 ourapp_do_vm_image: ubuntu-18-04-x64
 ourapp_do_vm_region: sfo2
 
+reverseproxy_vm_size: s-1vcpu-1gb
+reverseproxy_vm_image: ubuntu-18-04-x64
+reverseproxy_vm_region: sfo2
+
 do_vm_size: s-1vcpu-1gb
 do_vm_image: ubuntu-18-04-x64
 do_vm_region: sfo2
