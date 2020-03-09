@@ -1,0 +1,50 @@
+---
+# tasks file for pipeline-deploy-ourvm-app
+- name: Remove all files in  vm-products-repo
+  file: 
+    path: /home/appteam/vm-products-repo
+    state: absent
+
+- name: create ansible folder to host GIT Repo
+  file:
+    path: "/home/appteam/vm-products-repo"
+    owner: "appteam"
+    group: "appteam"
+    state: directory
+    recurse: yes
+
+- name: GIT Checkout master branch
+  git:
+    repo: 'git@github.com:quanglee/appliedsearch-vm-products.git'
+    dest: /home/appteam/vm-products-repo
+    key_file: /home/appteam/.ssh/id_rsa_deploy_vm_products
+    version: master
+
+- name: Prepare our environment file
+  copy: src=files/.env dest=/home/appteam/vm-products-repo
+
+- name: Prepare our environment file to backend
+  copy: src=files/backend/.env dest=/home/appteam/vm-products-repo/backend
+
+- name: Prepare our environment file to frontend
+  copy: src=files/frontend/.env dest=/home/appteam/vm-products-repo/frontend
+
+- name: Prepare dockerc-compose deploy
+  shell: cd /home/appteam/vm-products-repo && git rev-parse HEAD
+  register: gitcommithash
+
+- name: Update docker compose file with the latest docker image
+  shell: sed -i -e 's/GIT_COMMIT_HASH/{{ gitcommithash.stdout}}/g' /home/appteam/vm-products-repo/docker-compose.yml
+
+- name: Tear down existing services of our vm apps
+  docker_compose:
+    project_src: /home/appteam/vm-products-repo
+    state: absent
+
+- name: Create and start services of our vm apps
+  docker_compose:
+    project_src: /home/appteam/vm-products-repo
+  register: output
+
+- debug:
+    msg: "{{ output }}"

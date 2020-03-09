@@ -4,18 +4,19 @@
   become_user: appteam
   gather_facts: False
   tasks:
-    - name: Test
-      command: hostname        
-   
+    #- name: GIT Checkout master branch
+    #  git:
+    #    repo: 'git@github.com:quanglee/appliedsearch-vm-products.git'
+    #    dest: /home/appteam/vm-products-repo
+    #    key_file: /home/appteam/.ssh/id_rsa_deploy_vm_products
+    #    version: master
     - name: Tear down existing services
       docker_compose:
-         project_src: /home/appteam/flaskansible-repo
+         project_src: /home/appteam/vm-products-repo
          state: absent
 
     - name: Create and start services
       docker_compose:
-        project_src: /home/appteam/flaskansible-repo
+        project_src: /home/appteam/vm-products-repo
       register: output
-
-    - debug:
-        var: output
+   

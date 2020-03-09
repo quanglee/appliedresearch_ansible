@@ -4,6 +4,9 @@ ansibleserver ansible_connection=local
 [ansible_hosts]
 ansiblenode01 ansible_host=192.168.0.227
 
+[ourvm_apps]
+ourvmnode ansible_host=157.245.237.245
+
 #[temp_inventory_group]
-#ansiblenode ansible_host=167.71.127.123
+#ansiblenode ansible_host=157.245.239.76
 

@@ -1,0 +1,7 @@
+- hosts: ourvm_apps
+  remote_user: appteam
+  become: yes
+  become_user: appteam
+  gather_facts: False
+  roles:
+    - { role: pipeline-deploy-ourvm-app }
