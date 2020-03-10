@@ -1,0 +1,13 @@
+server {
+  server_name ci.codinginsight.xyz codinginsight.xyz;
+  location / {
+    proxy_pass http://167.172.202.159:8080;
+  }
+}
+
+#server {
+#  server_name jenkins01.codinginsight.xyz;
+#  location / {
+#    proxy_pass http://localhost:8085;
+#  }
+#}
