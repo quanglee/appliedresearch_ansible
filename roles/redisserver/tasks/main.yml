@@ -1,0 +1,12 @@
+---
+# tasks file for redisserver
+- name: Install Redisserver
+  apt: name=redis-server state=present update_cache=yes
+
+- name: Update Redis conf file
+  copy: src=files/redis.conf dest=/etc/redis owner=redis group=redis mode=0640
+
+- name: Restart Redis Server
+  service: name=redis-server state=restarted
+
+  

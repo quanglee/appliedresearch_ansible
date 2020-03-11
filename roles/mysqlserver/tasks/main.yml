@@ -1,0 +1,43 @@
+---
+# tasks file for mysql
+- name: Install all dependencies for mysql server
+  apt: name={{ item }} state=present update_cache=yes
+  with_items:
+    - python-pip
+    - python-virtualenv
+    - python-mysqldb
+    - libssl-dev
+
+- name: Install MYSQL Server and its dependencies
+  apt: name=mysql-server state=present update_cache=yes
+
+- name: Ensure MYSQL Server is started
+  service: name=mysql state=started enabled=yes
+
+- name: Ensure pymysql package is install
+  pip: executable=pip3 name=pymysql state=present
+
+- name: Copy .my.cnf into secret place
+  copy: src=files/.my.cnf dest=/root
+
+#- name: Update root user with new password with all database privileges
+#  mysql_user:
+#    name: root
+#    password: "{{ mysql_password }}"
+#    login_unix_socket: /var/run/mysqld/mysqld.sock
+#    check_implicit_admin: true
+#    priv: '*.*:ALL,GRANT'
+#    state: present
+
+- name: Example of skipping binary logging while adding user 'appteam'
+  mysql_user:
+    name: appteam
+    password: "{{ mysql_password }}"
+    login_unix_socket: /var/run/mysqld/mysqld.sock
+    check_implicit_admin: true
+    priv: "*.*:ALL"
+    state: present
+    sql_log_bin: no
+
+- name: Restart MySQL server
+  service: name=mysql state=restarted

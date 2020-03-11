@@ -73,3 +73,6 @@
     dest: /home/appteam/flaskansible-repo
     key_file: /home/appteam/.ssh/id_rsa_deploy_flask_ansible
     version: master
+
+- name: copy vault text to secret place
+  copy: src=~/.vault_pass.txt dest=/home/appteam mode=0600

@@ -1,24 +1,16 @@
 - hosts: temp_inventory_group
   remote_user: root
   become: true
-  #become_user: appteam
+  become_user: appteam
   gather_facts: False
   tasks:
-    - name: Unlink the symlink of default Nginx file in site-enabled
-      file:
-        path: "/etc/nginx/sites-enabled/default"
-        state: absent
+    - name: copy vault text to secret place
+      copy: src=~/.vault_pass.txt dest=/home/appteam mode=0600
 
-    - name: Remove default Nginx file in site-available
-      file:
-        path: "/etc/nginx/sites-available/default"
-        state: absent
-
-    - name: copy default reverseproxy config file
-      copy: src=./roles/webserver/files/default dest=/etc/nginx/sites-available   
-
-    - name: Create symlink to site-enabled
-      file: src=/etc/nginx/sites-available/default dest=/etc/nginx/sites-enabled/default state=link
-   
-    - name: Nginx restart
-      service: name=nginx state=restarted 
+- hosts: temp_inventory_group
+  remote_user: root
+  become: true
+  #become_user: appteam
+  gather_facts: False
+  roles: 
+    - { role: redisserver }
