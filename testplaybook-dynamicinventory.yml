@@ -1,0 +1,8 @@
+- hosts: "{{ target }}"
+  remote_user: root
+  become: true
+  become_user: appteam
+  gather_facts: False
+  tasks:
+    - name: Test Playbook
+      command: hostname

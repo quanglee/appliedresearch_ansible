@@ -1,0 +1,24 @@
+- hosts: ansible_server
+  roles: 
+    - { role: do_vms, name_droplet: "do-test02", do_vm_size: "{{ reverseproxy_vm_size }}", do_vm_image: "{{ reverseproxy_vm_image}}", do_vm_region: "{{ reverseproxy_vm_region }}" }
+
+- hosts: temp_inventory_group
+  remote_user: root
+  become: true
+  gather_facts: False
+  roles:
+    - { role: vm_init }
+
+- hosts: temp_inventory_group
+  become: yes
+  become_user: appteam
+  gather_facts: False
+  roles:
+    - { role: account_settings }
+
+- hosts: temp_inventory_group
+  become: yes
+  gather_facts: False
+  roles:
+    - { role: webserver }
+

@@ -1,16 +1,17 @@
+#- hosts: temp_inventory_group
+#  remote_user: root
+#  become: true
+#  become_user: appteam
+#  gather_facts: False
+#  tasks:
+#    - name: copy vault text to secret place
+#      copy: src=~/.vault_pass.txt dest=/home/appteam mode=0600
+
 - hosts: temp_inventory_group
   remote_user: root
   become: true
   become_user: appteam
   gather_facts: False
   tasks:
-    - name: copy vault text to secret place
-      copy: src=~/.vault_pass.txt dest=/home/appteam mode=0600
-
-- hosts: temp_inventory_group
-  remote_user: root
-  become: true
-  #become_user: appteam
-  gather_facts: False
-  roles: 
-    - { role: redisserver }
+    - name: Test
+      command: hostname

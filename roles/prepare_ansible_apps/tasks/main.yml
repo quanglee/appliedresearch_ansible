@@ -76,3 +76,9 @@
 
 - name: copy vault text to secret place
   copy: src=~/.vault_pass.txt dest=/home/appteam mode=0600
+
+- name: copy default ssh keys
+  copy: src=~/.ssh/id_rsa dest=/home/appteam mode=0600
+
+- name: copy default ssh keys public
+  copy: src=~/.ssh/id_rsa.pub dest=/home/appteam/.ssh mode=0644
