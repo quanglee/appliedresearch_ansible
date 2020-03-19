@@ -7,18 +7,18 @@
   args:
     creates: /home/appteam/.ssh/id_rsa_deploy_ansible
 
-- name: generate deploy key for appliedresearch_flask_ansible repo
-  shell: ssh-keygen -b 2048 -t rsa -f /home/appteam/.ssh/id_rsa_deploy_flask_ansible -q -N ""
+- name: generate deploy key for appliedresearch-django-ansible repo
+  shell: ssh-keygen -b 2048 -t rsa -f /home/appteam/.ssh/id_rsa_deploy_django_ansible -q -N ""
   args:
-    creates: /home/appteam/.ssh/id_rsa_deploy_flask_ansible
+    creates: /home/appteam/.ssh/id_rsa_deploy_django_ansible
 
 - name: cat file pub key for ansible repo
   shell: cat /home/appteam/.ssh/id_rsa_deploy_ansible.pub
   register: deploypubkeyansible
 
-- name: cat file pub key for flask ansible repo
-  shell: cat /home/appteam/.ssh/id_rsa_deploy_flask_ansible.pub
-  register: deploypubkeyflaskansible
+- name: cat file pub key for django ansible repo
+  shell: cat /home/appteam/.ssh/id_rsa_deploy_django_ansible.pub
+  register: deploypubkeydjangoansible
 
 - name: Add GIT deploy key for appteam into ansible repo
   github_deploy_key:
@@ -32,12 +32,12 @@
     state: present
     otp: "123456"
 
-- name: Add GIT deploy key for appteam into flask ansible repo
+- name: Add GIT deploy key for appteam into django ansible repo
   github_deploy_key:
     owner: "quanglee"
-    repo: "appliedresearch-flask-ansible-wrapper"
-    name: "appliedresearch-flask-deploy-key"
-    key: "{{ deploypubkeyflaskansible.stdout }}"
+    repo: "appliedresearch-django-ansible"
+    name: "appliedresearch-django-deploy-key"
+    key: "{{ deploypubkeydjangoansible.stdout }}"
     read_only: yes
     username: "quanglee"
     password: "{{ vault_github_password }}"
@@ -52,9 +52,9 @@
     state: directory
     recurse: yes
 
-- name: create flask ansible folder to host GIT Repo
+- name: create django ansible folder to host GIT Repo
   file:
-    path: "/home/appteam/flaskansible-repo"
+    path: "/home/appteam/djangoansible-repo"
     owner: "appteam"
     group: "appteam"
     state: directory
@@ -67,18 +67,12 @@
     key_file: /home/appteam/.ssh/id_rsa_deploy_ansible
     version: master
 
-- name: Git checkout Flask Ansible Repo
+- name: Git checkout Django Ansible Repo
   git:
-    repo: 'git@github.com:quanglee/appliedresearch-flask-ansible-wrapper.git'
-    dest: /home/appteam/flaskansible-repo
-    key_file: /home/appteam/.ssh/id_rsa_deploy_flask_ansible
+    repo: 'git@github.com:quanglee/appliedresearch-django-ansible.git'
+    dest: /home/appteam/djangoansible-repo
+    key_file: /home/appteam/.ssh/id_rsa_deploy_django_ansible
     version: master
 
 - name: copy vault text to secret place
   copy: src=~/.vault_pass.txt dest=/home/appteam mode=0600
-
-- name: copy default ssh keys
-  copy: src=~/.ssh/id_rsa dest=/home/appteam mode=0600
-
-- name: copy default ssh keys public
-  copy: src=~/.ssh/id_rsa.pub dest=/home/appteam/.ssh mode=0644
