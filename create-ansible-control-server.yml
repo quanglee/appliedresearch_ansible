@@ -10,6 +10,7 @@
     - { role: vm_init }
 
 - hosts: temp_inventory_group
+  remote_user: appteam
   become: yes
   become_user: appteam
   gather_facts: False
@@ -24,6 +25,12 @@
     - { role: webserver }
     - { role: mysqlserver }
     - { role: redisserver }
+  tasks:
+    - name:  copy ssh key to new ansible server for rot user
+      copy: src=/home/quangle/.ssh/id_rsa dest=/root/.ssh
+
+    - name:  copy ssh key to new ansible server for rot user
+      copy: src=/home/quangle/.ssh/id_rsa.pub dest=/root/.ssh    
 
 - hosts: temp_inventory_group
   become: yes

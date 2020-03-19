@@ -21,6 +21,7 @@
     group: appteam
     groups: "sudo, docker"
     password: "{{ sudo_user_appteam }}"
+    shell: /bin/bash
     comment: "Comment"
 
 - name: update sudoers for 'appteam' user
@@ -30,3 +31,6 @@
     regexp: '^%sudo'
     line: '%sudo ALL=(ALL) NOPASSWD: ALL'
     validate: 'visudo -cf %s'
+
+- name: copy skel bashrc to appteam user homr
+  copy: src=/etc/skel/.bashrc dest=/home/appteam

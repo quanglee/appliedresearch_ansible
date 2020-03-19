@@ -7,6 +7,8 @@
   apt: name={{item}} state=present update_cache=yes
   with_items:
     - software-properties-common
+    - python-pip  
+    - python3-pip
 
 - name: Update System
   apt: update_cache=yes
