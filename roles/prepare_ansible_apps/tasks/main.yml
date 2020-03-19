@@ -2,6 +2,12 @@
 #- debug:
 #    msg: " Hello {{ ansible_ssh_host }}"
 
+- name: Ensure jmespath package is install
+  pip: executable=pip3 name=jmespath state=present
+
+- name: Ensure jmespath package is install
+  pip: name=jmespath state=present
+
 - name: generate deploy key for appliedresearch_ansible repo
   shell: ssh-keygen -b 2048 -t rsa -f /home/appteam/.ssh/id_rsa_deploy_ansible -q -N ""
   args:
@@ -76,3 +82,15 @@
 
 - name: copy vault text to secret place
   copy: src=~/.vault_pass.txt dest=/home/appteam mode=0600
+
+- name:  copy ssh key to new ansible server for appteam user
+  copy: src=/home/quangle/.ssh/id_rsa dest=/home/appteam/.ssh
+
+- name:  copy ssh key to new ansible server for appteam user
+  copy: src=/home/quangle/.ssh/id_rsa.pub dest=/home/appteam/.ssh
+  
+- name:  copy ssh key to new ansible server for rot user
+  copy: src=/home/quangle/.ssh/id_rsa dest=/home/root/.ssh
+
+- name:  copy ssh key to new ansible server for rot user
+  copy: src=/home/quangle/.ssh/id_rsa.pub dest=/home/root/.ssh

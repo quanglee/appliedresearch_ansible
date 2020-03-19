@@ -1,4 +1,4 @@
-- hosts: ansible_server
+- hosts: localhost 
   roles: 
     - { role: do_vms, name_droplet: "our-reverseproxy-droplet", do_vm_size: "{{ reverseproxy_vm_size }}", do_vm_image: "{{ reverseproxy_vm_image}}", do_vm_region: "{{ reverseproxy_vm_region }}" }
 
