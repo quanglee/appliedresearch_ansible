@@ -24,4 +24,10 @@
     - { role: webserver }
     - { role: mysqlserver }
     - { role: redisserver }
+
+- hosts: temp_inventory_group
+  become: yes
+  become_user: appteam
+  gather_facts: False
+  roles:
     - { role: prepare_ansible_apps }

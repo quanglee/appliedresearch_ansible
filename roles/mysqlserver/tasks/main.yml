@@ -4,6 +4,7 @@
   apt: name={{ item }} state=present update_cache=yes
   with_items:
     - python-pip
+    - python3-pip  
     - python-virtualenv
     - python-mysqldb
     - libssl-dev
@@ -20,14 +21,14 @@
 - name: Copy .my.cnf into secret place
   copy: src=files/.my.cnf dest=/root
 
-#- name: Update root user with new password with all database privileges
-#  mysql_user:
-#    name: root
-#    password: "{{ mysql_password }}"
-#    login_unix_socket: /var/run/mysqld/mysqld.sock
-#    check_implicit_admin: true
-#    priv: '*.*:ALL,GRANT'
-#    state: present
+- name: Update root user with new password with all database privileges
+  mysql_user:
+    name: root
+    password: "{{ mysql_password }}"
+    login_unix_socket: /var/run/mysqld/mysqld.sock
+    check_implicit_admin: true
+    priv: '*.*:ALL,GRANT'
+    state: present
 
 - name: Example of skipping binary logging while adding user 'appteam'
   mysql_user:
