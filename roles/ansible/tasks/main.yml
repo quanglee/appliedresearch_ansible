@@ -17,3 +17,6 @@
 
 - name: Install Ansible
   apt: name=ansible state=present update_cache=yes
+
+- name: Ensure jmespath package is install
+  pip: name=jmespath state=present

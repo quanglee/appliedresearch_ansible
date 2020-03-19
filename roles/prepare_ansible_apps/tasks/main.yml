@@ -90,7 +90,7 @@
   copy: src=/home/quangle/.ssh/id_rsa.pub dest=/home/appteam/.ssh
   
 - name:  copy ssh key to new ansible server for rot user
-  copy: src=/home/quangle/.ssh/id_rsa dest=/home/root/.ssh
+  copy: src=/home/quangle/.ssh/id_rsa dest=/root/.ssh
 
 - name:  copy ssh key to new ansible server for rot user
-  copy: src=/home/quangle/.ssh/id_rsa.pub dest=/home/root/.ssh
+  copy: src=/home/quangle/.ssh/id_rsa.pub dest=/root/.ssh
