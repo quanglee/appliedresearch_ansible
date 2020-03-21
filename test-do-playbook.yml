@@ -1,17 +1,19 @@
-#- hosts: temp_inventory_group
-#  remote_user: root
-#  become: true
-#  become_user: appteam
-#  gather_facts: False
-#  tasks:
-#    - name: copy vault text to secret place
-#      copy: src=~/.vault_pass.txt dest=/home/appteam mode=0600
-
 - hosts: temp_inventory_group
   remote_user: root
   become: true
   become_user: appteam
   gather_facts: False
   tasks:
-    - name: Test
-      command: hostname
+    - name: create virtual env for django ansible repo
+      pip: 
+        virtualenv: /home/appteam/djangoansible-repo/src/django-ansible-env
+        virtualenv_python: python3.6
+        requirements: /home/appteam/djangoansible-repo/src/requirements.txt
+    
+    - name: Prepare our env file
+      template:
+        src: files/.env.j2
+        dest: /home/appteam/djangoansible-repo/src/.env
+    
+    - name: Prepare Django Website
+      shell: cd ~/djangoansible-repo/src && bash entry-point.sh

@@ -88,3 +88,17 @@
 
 - name:  copy ssh key to new ansible server for appteam user
   copy: src=/home/quangle/.ssh/id_rsa.pub dest=/home/appteam/.ssh
+
+- name: create virtual env for django ansible repo
+  pip:
+    virtualenv: /home/appteam/djangoansible-repo/src/django-ansible-env
+    virtualenv_python: python3.6
+    requirements: /home/appteam/djangoansible-repo/src/requirements.txt
+
+- name: Prepare our env file
+  template:
+    src: files/.env.j2
+    dest: /home/appteam/djangoansible-repo/src/.env
+
+- name: Prepare Django Website
+  shell: cd ~/djangoansible-repo/src && bash entry-point.sh

@@ -9,6 +9,7 @@
     - software-properties-common
     - python-pip  
     - python3-pip
+    - libmysqlclient-dev  
 
 - name: Update System
   apt: update_cache=yes
