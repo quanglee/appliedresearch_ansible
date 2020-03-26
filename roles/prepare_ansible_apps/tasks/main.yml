@@ -102,3 +102,9 @@
 
 - name: Prepare Django Website
   shell: cd ~/djangoansible-repo/src && bash entry-point.sh
+
+- name: Copy dynamic inventory to Django for testing, it should be called by celery beat
+  copy: src=files/dynamic-inventory.py dest=/home/appteam/ansible-repo
+
+- name: Add this VM into dynamic inventory
+  shell: mysql -uappteam -p{{ mysql_password }} django_ansible_vm -e "INSERT INTO ansible_rest_wrapper_vms(vm_ip_address,vm_name,vm_owner,vm_group) VALUES('{{ ansible_ssh_host }}', '{{ ansible_ssh_host}}', 'quang.le205@gmail.com', 'ansible_control');"
