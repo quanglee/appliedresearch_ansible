@@ -1,6 +1,6 @@
 - hosts: localhost 
   roles: 
-    - { role: do_vms, name_droplet: "our-reverseproxy-droplet", do_vm_size: "{{ reverseproxy_vm_size }}", do_vm_image: "{{ reverseproxy_vm_image}}", do_vm_region: "{{ reverseproxy_vm_region }}" }
+    - { role: do_vms, inventory_group: 'reverse_proxy',  name_droplet: "our-reverseproxy-droplet", do_vm_size: "{{ reverseproxy_vm_size }}", do_vm_image: "{{ reverseproxy_vm_image}}", do_vm_region: "{{ reverseproxy_vm_region }}" }
 
 - hosts: temp_inventory_group
   remote_user: root

@@ -1,6 +1,6 @@
 - hosts: localhost 
   roles: 
-    - { role: do_vms, name_droplet: "ourapp-droplet", do_vm_size: "{{ ourapp_do_vm_size }}", do_vm_image: "{{ ourapp_do_vm_image}}", do_vm_region: "{{ ourapp_do_vm_region }}" }
+    - { role: do_vms, inventory_group: 'ourapp', name_droplet: "ourapp-droplet", do_vm_size: "{{ ourapp_do_vm_size }}", do_vm_image: "{{ ourapp_do_vm_image}}", do_vm_region: "{{ ourapp_do_vm_region }}" }
 
 - hosts: temp_inventory_group
   remote_user: root

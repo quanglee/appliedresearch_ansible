@@ -1,6 +1,6 @@
 - hosts: localhost
   roles: 
-    - { role: do_vms, name_droplet: "ansiblecontrol-droplet", do_vm_size: "{{ ansible_do_vm_size }}", do_vm_image: "{{ ansible_do_vm_image }}", do_vm_region: "{{ ansible_do_vm_region }}" }
+    - { role: do_vms, inventory_group: 'ansible_control', name_droplet: "ansiblecontrol-droplet", do_vm_size: "{{ ansible_do_vm_size }}", do_vm_image: "{{ ansible_do_vm_image }}", do_vm_region: "{{ ansible_do_vm_region }}" }
 
 - hosts: temp_inventory_group
   remote_user: root
