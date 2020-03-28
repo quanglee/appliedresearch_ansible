@@ -1,4 +1,4 @@
-- hosts: ourvm_apps
+- hosts: "{{ target }}"
   remote_user: appteam
   become: yes
   become_user: appteam
