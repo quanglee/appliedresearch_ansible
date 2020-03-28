@@ -61,24 +61,7 @@ class AnsibleInventory:
         self.connection.close()
 
         return self.inventory
-        #return {
-        #     "do_vms": {
-        #         "hosts": [
-        #             "167.99.100.240",
-        #             "157.245.174.66"
-        #         ],
-        #     },
-        #     "_meta": {
-        #         "hostvars": {
-        #             "167.99.100.240": {
-        #                 "host_specific_var": "do-test01"
-        #             },
-        #             "157.245.174.66": {
-        #                 "host_specific_var": "do-test02"
-        #             }
-        #         }
-        #     }
-        # }
+
     # Empty inventory for testing.
     def empty_inventory(self):
         return {'_meta': {'hostvars': {}}}
