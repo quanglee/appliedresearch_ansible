@@ -95,13 +95,19 @@
     virtualenv_python: python3.6
     requirements: /home/appteam/djangoansible-repo/src/requirements.txt
 
+- name: create virtual env for ansible repo
+  pip:
+    virtualenv: /home/appteam/ansible-repo/dynamicinventory.env
+    virtualenv_python: python3.6
+    requirements: /home/appteam/ansible-repo/requirements.txt
+
 - name: Prepare our env file
   template:
     src: files/.env.j2
     dest: /home/appteam/djangoansible-repo/src/.env
 
-- name: Prepare Django Website
-  shell: cd ~/djangoansible-repo/src && bash entry-point.sh
+#- name: Prepare Django Website
+#shell: cd ~/djangoansible-repo/src && bash entry-point.sh
 
 - name: Copy dynamic inventory to Django for testing, it should be called by celery beat
   copy: src=files/dynamic-inventory.py dest=/home/appteam/ansible-repo
