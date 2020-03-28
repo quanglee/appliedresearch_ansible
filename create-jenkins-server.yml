@@ -68,14 +68,14 @@
         name: mycijenkins
         state: stopped
 
+    - name: Get Temp Admin password for user admin
+      shell: cat /home/appteam/jenkins_home/secrets/initialAdminPassword
+      register: secretskey
+    
     - name: Start container
       docker_container:
         name: mycijenkins
         state: started
-
-    - name: Get Temp Admin password for user admin
-      shell: docker container exec -it -u root mycijenkins bash -c 'cat var/jenkins_home/secrets/initialAdminPassword'
-      register: secretskey
 
     - debug:
         msg: "Key for admin: {{ secretskey.stdout }}"
