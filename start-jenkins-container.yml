@@ -1,0 +1,48 @@
+- hosts: "{{ target }}"
+  remote_user: root
+  become: true
+  become_user: appteam
+  gather_facts: False
+  tasks:
+    - name: Run Jenkins container for first time
+      docker_container:
+        image: jenkinsci/blueocean
+        name: mycijenkins
+        state: present
+        ports:
+          - "8080:8080"
+          - "50000:50000"
+        volumes:
+          - /var/run/docker.sock:/var/run/docker.sock
+          - /home/appteam/jenkins_home:/var/jenkins_home
+          - /home/appteam:/home
+
+    - name: Stop container
+      docker_container:
+        name: mycijenkins
+        state: stopped
+
+    - name: Start container
+      docker_container:
+        name: mycijenkins
+        state: started
+
+    - name: remote inside container to fix permission denied docker
+      shell: docker container exec -it -u root mycijenkins bash -c 'addgroup --gid 1001 hostdocker; addgroup jenkins hostdocker'
+
+    - name: Stop container
+      docker_container:
+        name: mycijenkins
+        state: stopped
+
+    - name: Start container
+      docker_container:
+        name: mycijenkins
+        state: started
+
+    - name: Get Temp Admin password for user admin
+      shell: docker container exec -it -u root mycijenkins bash -c 'cat var/jenkins_home/secrets/initialAdminPassword'
+      register: secretskey
+
+    - debug:
+        msg: "Key for admin: {{ secretskey.stdout }}"
