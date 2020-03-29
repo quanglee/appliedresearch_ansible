@@ -29,6 +29,9 @@
 - name: Prepare our environment file to frontend
   copy: src=files/frontend/.env dest=/home/appteam/vm-products-repo/frontend
 
+- name: Prepare our environment file to backend with service account
+  copy: src=files/backend/service-account-file.json dest=/home/appteam/vm-products-repo/backend
+
 - name: Prepare dockerc-compose deploy
   shell: cd /home/appteam/vm-products-repo && git rev-parse HEAD
   register: gitcommithash
