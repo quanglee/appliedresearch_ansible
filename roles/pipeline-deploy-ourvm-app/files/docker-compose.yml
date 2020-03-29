@@ -1,0 +1,49 @@
+version: '3'
+services:
+  appliedresearch-nginx-reverse:
+    image: nginx:stable
+    ports:
+      - "80:80"
+    volumes:
+      - ./default.conf:/etc/nginx/conf.d/default.conf:ro
+    depends_on:
+      - appliedresearch-backend
+      - appliedresearch-frontend
+  appliedresearch-backend:
+    image: quangle205/appliedreseach-vm-product-backend:70b92d8a840380818920564b54e83a61013539d2
+    env_file:
+      - ./backend/.env
+    ports:
+      - "5000:5000"
+    depends_on:
+      - appliedresearch-mysql
+    volumes:
+      - ${BACKEND_DOCUMENT_ROOT}/node_modules
+      - ./backend:${BACKEND_DOCUMENT_ROOT}
+  appliedresearch-frontend:
+    image: quangle205/appliedreseach-vm-product-frontend:70b92d8a840380818920564b54e83a61013539d2
+    env_file:
+      - ./frontend/.env
+    depends_on:
+      - appliedresearch-backend
+    ports:
+      - "3000:3000"
+    volumes:
+      - ${FRONTEND_DOCUMENT_ROOT}/node_modules
+      - ./frontend:${FRONTEND_DOCUMENT_ROOT}
+  appliedresearch-mysql:
+    image: mysql:5.7
+    restart: always
+    ports:
+      - "3306:3306"
+    env_file:
+      - .env
+    environment:
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+      - MYSQL_DATABASE=${MYSQL_DATABASE}
+    volumes:
+      - appliedresearch-vm-db-volume:/var/lib/mysql
+      - ./backend/database:/docker-entrypoint-initdb.d
+
+volumes:
+  appliedresearch-vm-db-volume:
