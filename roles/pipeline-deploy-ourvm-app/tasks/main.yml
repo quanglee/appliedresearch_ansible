@@ -32,12 +32,21 @@
 - name: Prepare our environment file to backend with service account
   copy: src=files/backend/service-account-file.json dest=/home/appteam/vm-products-repo/backend
 
+- name: Copy nginx config files to vm-products-repo
+  copy: src=files/nginx/default.conf dest=/home/appteam/vm-products-repo
+
+- name: Copy our docker-compose with nginx proxy
+  copy: src=files/docker-compose.yml dest=/home/appteam/vm-products-repo
+
 - name: Prepare dockerc-compose deploy
   shell: cd /home/appteam/vm-products-repo && git rev-parse HEAD
   register: gitcommithash
 
 - name: Update docker compose file with the latest docker image
   shell: sed -i -e 's/GIT_COMMIT_HASH/{{ gitcommithash.stdout}}/g' /home/appteam/vm-products-repo/docker-compose.yml
+
+- name: Update env file of frontend to replace with current ip_address
+  shell: sed -i -e 's/__BACKEND_IP__/{{ ansible_ssh_host }}/g' /home/appteam/vm-products-repo/frontend/.env
 
 - name: Tear down existing services of our vm apps
   docker_compose:
