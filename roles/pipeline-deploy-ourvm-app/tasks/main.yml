@@ -39,6 +39,9 @@
 - name: Update docker compose file with the latest docker image
   shell: sed -i -e 's/GIT_COMMIT_HASH/{{ gitcommithash.stdout}}/g' /home/appteam/vm-products-repo/docker-compose.yml
 
+- name: Update our environment file in backend to connect django app 
+  shell: sed -i -e 's/__DJANGO_API_HOST__/http:\/\/{{ ansible_default_ipv4.address }}/g' /home/appteam/vm-products-repo/docker-compose.yml
+
 - name: Update env file of frontend to replace with current ip_address
   shell: sed -i -e 's/__BACKEND_IP__/{{ ansible_ssh_host }}/g' /home/appteam/vm-products-repo/frontend/.env
 
