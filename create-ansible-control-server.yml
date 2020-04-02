@@ -55,7 +55,7 @@
         state: absent
 
     - name: copy default reverseproxy config file
-      copy: src=files/default.conf dest=/etc/nginx/sites-available
+      copy: src=./roles/prepare_ansible_apps/files/default.conf dest=/etc/nginx/sites-available
 
     - name: Create symlink to site-enabled
       file: src=/etc/nginx/sites-available/default.conf dest=/etc/nginx/sites-enabled/default state=link
