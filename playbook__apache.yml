@@ -1,0 +1,13 @@
+- hosts: "{{ target }}"
+  remote_user: vm-service
+  become: yes
+  become_user: root
+  gather_facts: False
+  tasks:
+    - name: update server
+      shell: apt update
+
+    - name: install mysql-server
+      apt: name={{ item }} state={{ state }} update_cache=yes
+      with_items:
+        - apache2
