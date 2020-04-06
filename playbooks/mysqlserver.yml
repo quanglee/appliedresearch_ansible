@@ -1,0 +1,7 @@
+- hosts: "{{ target }}"
+  remote_user: vm-service
+  become: yes
+  become_user: vm-service
+  gather_facts: False
+  roles:
+    - { role: mysqlserver }
