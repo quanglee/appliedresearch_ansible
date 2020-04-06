@@ -116,6 +116,9 @@
   file:
     path: /home/appteam/ansible-repo/dynamic-inventory.py
     mode: 0755
-    
+
+- name: Create django_ansible_vm schema
+  shell: mysql -uappteam -p{{ mysql_password }} -e "CREATE DATABASE django_ansible_vm;"
+
 - name: Add this VM into dynamic inventory
   shell: mysql -uappteam -p{{ mysql_password }} django_ansible_vm -e "INSERT INTO ansible_rest_wrapper_vms(vm_ip_address,vm_name,vm_owner,vm_group) VALUES('{{ ansible_ssh_host }}', '{{ ansible_ssh_host}}', 'quang.le205@gmail.com', 'ansible_control');"
